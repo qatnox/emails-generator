@@ -16,26 +16,33 @@ class GenerateMail {
     private static final List<String> list = new ArrayList<>();
     private static final List<String> mail = new ArrayList<>();
 
+    public void init(File input, String domain, File output){
+        readFile(input);
+        generate(domain);
+        saveFile(output);
+    }
+
     public static void readFile(File input){
         start = System.currentTimeMillis();
-        try {
-            System.out.println("> Opening & reading " + input.getName() + " file...");
 
-            FileReader reader = new FileReader(input);
-            BufferedReader buffReader = new BufferedReader(reader);
+        try(FileReader reader = new FileReader(input);
+            BufferedReader buffReader = new BufferedReader(reader)) {
+
+            System.out.println("> Opening & reading " + input.getName() + " file...");
 
             String line;
             while((line = buffReader.readLine()) != null){
                 list.add(line);
             }
         } catch (IOException e) {
-            System.err.println("The process cannot access the file because it is being used by another process");
+            System.err.println("The process cannot access the file because it is being used by another process.");
             System.exit(0);
         }
     }
 
     public static void generate(String domain) {
         System.out.println(">> Creating emails & password...");
+
         for (String s : list) {
             String latin = toLatinTrans.transliterate(s);
             latin = latin.toLowerCase();
@@ -45,16 +52,16 @@ class GenerateMail {
             if (emailParts[0].contains("'") || emailParts[0].contains("ʹ")) {
                 emailParts[0] = emailParts[0].replace("'", "").replace("ʹ", "");
             }
+
             String name = String.valueOf(emailParts[1].charAt(0));
             mail.add(emailParts[0] + "." + name + "@" + domain);
         }
     }
 
     public static void saveFile(File output){
-        try {
+        try(FileWriter writer = new FileWriter(output);) {
             System.out.println(">>> Saving to " + output.getName() +"...");
 
-            FileWriter writer = new FileWriter(output);
             writer.write("ID" + ";" + "Email" + ";" + "Password\n");
             for(int i = 0; i < mail.size(); i++) {
 
@@ -68,17 +75,15 @@ class GenerateMail {
 
                 writer.write(i + ";" + mail.get(i) + ";" + password + "\n");
             }
-            writer.close();
-
         } catch (IOException e) {
-            System.err.println("The process cannot access the file because it is being used by another process");
+            System.err.println("The process cannot access the file because it is being used by another process.");
             System.exit(0);
         }
 
         double end = System.currentTimeMillis();
         double time = (end - start) / 1000;
         System.out.println
-                ("====================================\n" +
+                ("=====================================\n" +
                         "Saved in " + output.getName() + "\n" +
                         "Done in " + (time) + " sec");
     }
