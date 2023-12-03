@@ -11,7 +11,7 @@ The "Corporate Emails Generator" is a Java application designed to simplify the 
 
   - _Output:_ The generated list, including user IDs, emails, and passwords, is formatted and saved to another .csv file.
 
-  - _Performance Excellence:_ With an impressive processing speed of approximately 0.4 seconds on average, the "Corporate Emails Generator" stands out as a swift and efficient solution for email list creation.
+  - _Performance:_ With a processing speed of approximately 0.4 seconds on average, the "Corporate Emails Generator" stands out as a swift and efficient solution for email list creation.
 ****
 **Usage example:**
 
@@ -26,6 +26,7 @@ The "Corporate Emails Generator" is a Java application designed to simplify the 
 **Technical Details:**
 
     Programming Language: Java
+    Used library: icu4j (ver. 73.2)
     Transliteration: UA->EN (can be changed)
     Processing Speed: ~0.4 seconds per 100,000 records
     Input Format: input.csv ("Surname;Name")
